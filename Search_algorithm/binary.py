@@ -11,17 +11,18 @@ def binary_search():
         else:
             l = mid + 1
     return mid
- 
+
 
 def binary_select():
 
     import bisect
 
-    n = [i for i in range(3)]
+    n = [i for i in range(10)]
     print(n)
 
     # 挿入場所を探索
-    left = bisect.bisect_left(n,3)
+    left = bisect.bisect_left(n,100)
+    print(left)
     # → 2
     right = bisect.bisect_right(n,2)
     # → 3
@@ -29,7 +30,7 @@ def binary_select():
     # 実際に挿入する
     bisect.insort(n,5)
     # → [0, 1, 2, 3, 4, 5, 5, 6, 7, 8, 9]
-
+    print(n)
     return left,right
 
 print(binary_select())
