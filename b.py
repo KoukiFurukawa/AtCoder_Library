@@ -1,22 +1,19 @@
-import math
-n = int(input())
-qr = [list(map(int, input().split())) for _ in range(n)]
+h, w = map(int, input().split())
+a = [list(input()) for _ in range(h)]
+b = [list(input()) for _ in range(h)]
 
-q = int(input())
-ans = []
+def shift(y, x):
+    result = [[0] *w for _ in range(h)]
+    # 縦シフト
+    for i in range(h):
+        for j in range(w):
+            result[(i+y) % h][(j+x) % w] = a[i][j]
 
-for i in range(q):
-    t,d = map(int,input().split())
-    cs = qr[t-1]
-    
-    res = 0
-    if d % cs[0] == cs[1]:# and d >= cs[0]:
-        res = d
-    else:
-        res = d + (cs[1] - d % cs[0])
-        if res < d:
-            res += cs[0] * math.ceil(((d - res) / cs[0]))
-        
-    ans.append(res)
-    
-print(*ans, sep="\n")
+    return result == b
+
+for i in range(h):
+    for j in range(w):
+        if shift(i, j):
+            print("Yes")
+            exit()
+print("No")
