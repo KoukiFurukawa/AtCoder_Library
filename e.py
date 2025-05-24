@@ -1,42 +1,54 @@
-S = input()
-T = input()
+from collections import deque
 
-# LCS
-def LCS(s,t):
+n, m = map(int,input().split())
+graph = [[] for _ in range(n)]
+
+for _ in range(m):
+    a, b = map(int,input().split())
+    graph[a - 1].append(b -1)
+    graph[b - 1].append(a -1)
     
-    dp = [[-1] * (len(t) + 1) for _ in range(len(s) + 1)]
+k = int(input())
+pd = [list(map(int,input().split())) for _ in range(k)]
+    
+def dfs(node):
+    stack = deque([node])
+    rg[node][node] = 0
+    while stack:
+        v = stack.popleft()
+        for i in graph[v]:
+            t = rg[node][v] + 1
+            if rg[node][i] == -1 or t < rg[node][i]:
+                stack.append(i)
+                rg[node][i] = t
+    
+rg = [[-1] * n for _ in range(n)]
+bw = [1] * n # 1が黒, 0が白
+for i in range(n):
+    dfs(i)
+    
 
-    for i in range(len(s) + 1):
-        dp[i][0] = 0
-    for j in range(len(t) + 1):
-        dp[0][j] = 0
-        
-    def isSame(x, y) -> int:
-        return 1 if x == y else 0
-        
-    for i in range(1, len(s) + 1):
-        for j in range(1, len(t) + 1):
-            dp[i][j] = max(dp[i-1][j-1] + isSame(s[i-1], t[j-1]), dp[i][j-1], dp[i-1][j])
+for i in range(k):
+    p, d = pd[i]
+    p -= 1
+    for j in range(n):
+        if rg[p][j] < d:
+            bw[j] = 0
 
-    return dp
+ok = True
+for i in range(k):
+    p, d = pd[i]
+    p -= 1
+    mn = 10 ** 9 + 7
+    for j in range(n):
+        if bw[j] == 1:
+            mn = min(mn, rg[p][j])
+    if mn != d:
+        ok = False
+        break
 
-# LCSの長さを取得 (dpテーブルの右下)
-dp_table = LCS(S, T)
-# 文字列復元
-i = len(S)
-j = len(T)
-lcs_str = ""
-while i > 0 and j > 0:
-    # s[i-1]とt[j-1]が一致する場合、LCSに含めて左上に移動
-    if S[i-1] == T[j-1]:
-        lcs_str = S[i-1] + lcs_str
-        i -= 1
-        j -= 1
-    # dp[i-1][j]の方が大きい場合、上に移動
-    elif dp_table[i-1][j] > dp_table[i][j-1]:
-        i -= 1
-    # dp[i][j-1]の方が大きい（または等しい）場合、左に移動
-    else:
-        j -= 1
-
-print(lcs_str)
+if ok:
+    print("Yes")
+    print(*bw, sep="")
+else:
+    print("No")

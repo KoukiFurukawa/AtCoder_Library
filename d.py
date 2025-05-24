@@ -1,24 +1,21 @@
-n, k = map(int, input().split())
-graph = [[] for _ in range(n)]
-for i in range(n-1):
-    a, b = map(int, input().split())
-    graph[a-1].append(b-1)
-    graph[b-1].append(a-1)
+n = int(input())
 
-v = list(map(int, input().split()))
-visited = [[-1, -1]]*n
-dic = {}
+left = 0
+right = n - 1
 
-def bfs(node):
-    stack = [node]
-    visited[node] = [0, -1]
-    while stack:
-        vl = stack.pop()
-        for i in graph[vl]:
-            if visited[i][0] == -1:
-                stack.append(i)
-                visited[i] = [visited[vl][0] + 1, vl]
+# left と right が隣り合うまでループ (right - left > 1)
+while right - left > 1:
+    mid = left + (right - left) // 2
+    # インタラクティブ問題では、クエリするインデックスは1-basedが多いので mid + 1 を使用
+    print(f"? {mid + 1}", flush=True)
+    s_mid_val = int(input())
 
-bfs(v[0]-1)
+    if s_mid_val == 0: # S[left] の値は0と仮定
+        left = mid
+    else:
+        right = mid
 
-print(visited)
+print(f"! {left + 1}", flush=True)
+
+"例 : n = 5, s = 00101"
+"例2: n = 6, s = 010101"
