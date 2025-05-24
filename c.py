@@ -1,11 +1,11 @@
-n  = int(input())
-s = input()
-ans = 0
-for i in s.split("-"):
-    ans = max(len(i), ans)
-cnt = s.count("-")
+h, w = map(int, input().split())
+s = [list(input()) for _ in range(h)]
 
-if ans != 0 and cnt != 0:
-    print(ans)
-else:
-    print(-1)
+for i in range(h):
+    for j in range(w - 1):
+        if s[i][j] == "T" and s[i][j+1] == "T":
+            s[i][j] = "P"
+            s[i][j+1] = "C"
+            
+for i in range(h):
+    print(*s[i], sep="")

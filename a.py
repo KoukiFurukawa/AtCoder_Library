@@ -1,12 +1,8 @@
-n = int(input())
-s = input()
-
+n, d = map(int, input().split())
+t = list(map(int, input().split()))
 cnt = 0
-for i in range(n):
-    if s[i] == "|":
-        cnt += 1
-    if cnt == 1 and s[i] =="*":
-        print("in")
+for i in range(1, n):
+    if t[i] - t[i - 1] <= d:
+        print(t[i])
         exit()
-        
-print("out")
+print(-1)

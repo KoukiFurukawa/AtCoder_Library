@@ -7,4 +7,4 @@ def gcd(x, y):
     else:
         return gcd(y,x%y)
     
-print(gcd(10101,6105))
+print(gcd(10**18,1))
